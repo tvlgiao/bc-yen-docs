@@ -1,0 +1,558 @@
+/* ---------------------------------------------------------------------- *
+ * Yen Theme docs — Material theme overrides
+ * Goal: roomy reading width + readable tables (no horizontal scrollbars,
+ * no awkward word-by-word wrapping in narrow columns).
+ * ---------------------------------------------------------------------- */
+
+:root {
+  --md-text-font: "Source Sans 3", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --md-code-font: "IBM Plex Mono", "JetBrains Mono", Consolas, monospace;
+}
+
+/* Wider content area — most settings tables have 3–5 columns. */
+.md-grid {
+  max-width: 1700px;
+}
+
+/* On wide screens give the article a bit more room vs. the sidebars. */
+@media (min-width: 1220px) {
+  .md-main__inner {
+    margin-top: 1rem;
+  }
+  .md-content {
+    max-width: 100%;
+  }
+  /* Trim the left nav so the article has more room. */
+  .md-sidebar--primary {
+    width: 13rem;
+  }
+}
+
+/* Make the article fully use available space. */
+.md-content__inner {
+  margin: 0 1rem 1rem;
+  padding-top: 1rem;
+}
+
+@media (min-width: 1700px) {
+  .md-content__inner {
+    margin: 0 2rem 2rem;
+  }
+}
+
+/* ----------------------------------------------------------------------
+ * Tables — readable, no horizontal scroll, balanced columns
+ * ---------------------------------------------------------------------- */
+
+.md-typeset__table {
+  width: 100%;
+  display: block;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.md-typeset table:not([class]) {
+  display: table;          /* override Material's default "block" so it actually shrinks-to-fit */
+  width: 100%;
+  table-layout: auto;
+  font-size: 0.78rem;
+  line-height: 1.5;
+  margin: 1rem 0 1.5rem;
+  border-collapse: collapse;
+  border: 1px solid var(--md-default-fg-color--lightest);
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.md-typeset table:not([class]) thead {
+  background: var(--md-default-fg-color--lightest);
+}
+
+.md-typeset table:not([class]) th,
+.md-typeset table:not([class]) td {
+  padding: 0.55rem 0.75rem;
+  vertical-align: top;
+  border-bottom: 1px solid var(--md-default-fg-color--lightest);
+  word-break: normal;       /* don't chop words */
+  overflow-wrap: anywhere;  /* but allow long URLs/IDs to break */
+  hyphens: none;
+}
+
+/* Zebra rows for readability when tables get long. */
+.md-typeset table:not([class]) tbody tr:nth-child(even) {
+  background: var(--md-default-fg-color--lightest);
+  background: color-mix(in srgb, var(--md-default-fg-color) 3%, transparent);
+}
+
+/* First column — usually a "Setting" label / ID. Tight but readable. */
+.md-typeset table:not([class]) td:first-child {
+  font-weight: 500;
+  white-space: normal;
+  min-width: 11rem;
+  max-width: 22rem;
+}
+
+/* If the first cell is JUST a <code>…</code>, force single line so short IDs
+   like `industrial` don't get chopped into `industri\nal`. */
+.md-typeset table:not([class]) td:first-child:has(> code:only-child) {
+  white-space: nowrap;
+}
+
+/* `code` inside table cells: smaller + tighter so long setting IDs fit. */
+.md-typeset table:not([class]) code {
+  font-size: 0.85em;
+  padding: 1px 4px;
+  word-break: keep-all;
+  overflow-wrap: anywhere;  /* only break when there's literally no room */
+}
+
+/* Center single-character cells (✓ ✅ ❌ checkmark columns). */
+.md-typeset table:not([class]) td:has(> :only-child),
+.md-typeset table:not([class]) td:where(:only-child) {
+  text-align: inherit;
+}
+
+/* Compact mode for "comparison" tables — 4-variation columns are common. */
+.md-typeset table.compact {
+  font-size: 0.74rem;
+}
+
+.md-typeset table.compact th,
+.md-typeset table.compact td {
+  padding: 0.4rem 0.55rem;
+}
+
+/* ----------------------------------------------------------------------
+ * Hero panel on the home page
+ * ---------------------------------------------------------------------- */
+
+.eshopping-hero {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1rem;
+  margin: 1.5rem 0 2rem;
+}
+
+.eshopping-hero a.card {
+  display: block;
+  padding: 1rem 1.25rem;
+  border: 1px solid var(--md-default-fg-color--lightest);
+  border-radius: 8px;
+  text-decoration: none;
+  transition: border-color 0.2s, transform 0.2s;
+}
+
+.eshopping-hero a.card:hover {
+  border-color: var(--md-accent-fg-color);
+  transform: translateY(-2px);
+}
+
+.eshopping-hero a.card h3 {
+  margin: 0 0 0.25rem;
+  font-size: 1rem;
+}
+
+.eshopping-hero a.card p {
+  margin: 0;
+  font-size: 0.82rem;
+  color: var(--md-default-fg-color--light);
+}
+
+/* ----------------------------------------------------------------------
+ * Admonitions — slightly tighter
+ * ---------------------------------------------------------------------- */
+
+.md-typeset .admonition,
+.md-typeset details {
+  font-size: 0.82rem;
+}
+
+/* ----------------------------------------------------------------------
+ * Color swatches — chip rendered before any inline `#rrggbb` code
+ * (see docs/js/color-swatch.js)
+ * ---------------------------------------------------------------------- */
+
+.color-swatch {
+  display: inline-block;
+  width: 0.92em;
+  height: 0.92em;
+  margin-right: 0.35em;
+  border-radius: 3px;
+  vertical-align: -0.12em;
+  background: var(--swatch);
+  border: 1px solid var(--md-default-fg-color--lighter);
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.4) inset;
+}
+
+/* ----------------------------------------------------------------------
+ * Code blocks — cap height so long embedded HTML scrolls inside the box
+ * instead of stretching the page. The "Exact demo HTML" collapsibles can
+ * be very tall (the Customer Reviews block is ~51 KB).
+ * ---------------------------------------------------------------------- */
+
+.md-typeset .highlight pre {
+  max-height: 30rem;
+  overflow: auto;        /* both axes — vertical scroll once capped */
+  overscroll-behavior: contain;
+}
+
+/* A touch taller inside the exact-demo-HTML collapsibles. */
+.md-typeset details.example .highlight pre {
+  max-height: 34rem;
+}
+
+/* ----------------------------------------------------------------------
+ * Customize mockups — mimic the REAL BigCommerce Theme Editor flyout panel
+ * (square checkboxes, hex+swatch colors, value+▾ dropdowns, group headings).
+ * Inline, pure CSS, no images. Auto-generated by .claude/inject-mockups.js.
+ * ---------------------------------------------------------------------- */
+
+.te-mock {
+  display: block;
+  max-width: 27rem;
+  margin: 0.45rem 0 1.3rem;
+  border: 1px solid #dfe3ea;
+  border-radius: 7px;
+  background: #fff;
+  box-shadow: 0 4px 18px rgba(23, 33, 55, 0.09);
+  font-family: var(--md-text-font);
+  overflow: hidden;
+}
+[data-md-color-scheme="slate"] .te-mock {
+  background: #1f232b; border-color: #3a3f4b; box-shadow: none;
+}
+
+.te-mock__hd {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 11px 15px; background: #f4f6fa; border-bottom: 1px solid #e6eaf1;
+  font-size: 0.96rem; font-weight: 600; color: #222a38;
+}
+[data-md-color-scheme="slate"] .te-mock__hd {
+  background: #262a33; border-bottom-color: #353a45; color: #e3e7ee;
+}
+.te-mock__hd .te-x { color: #aab2c0; font-weight: 400; font-size: 0.85rem; }
+
+.te-mock__grp {
+  padding: 11px 15px 3px; font-size: 0.8rem; font-weight: 700; color: #222a38;
+}
+[data-md-color-scheme="slate"] .te-mock__grp { color: #e3e7ee; }
+
+.te-mock__row {
+  display: flex; align-items: center; justify-content: space-between; gap: 1rem;
+  padding: 8px 15px 9px; font-size: 0.8rem;
+}
+.te-fld { display: flex; flex-direction: column; gap: 1px; min-width: 0; }
+.te-lbl { color: #3a4252; }
+[data-md-color-scheme="slate"] .te-lbl { color: #c7cdd7; }
+.te-desc { font-size: 0.66rem; line-height: 1.35; color: #8b94a3; }
+[data-md-color-scheme="slate"] .te-desc { color: #828b9a; }
+
+/* square checkbox (BC style) */
+.te-cb {
+  width: 18px; height: 18px; flex-shrink: 0; border: 1.5px solid #b9c0cc;
+  border-radius: 3px; background: #fff; position: relative;
+}
+.te-cb.is-on { background: #2f74e6; border-color: #2f74e6; }
+.te-cb.is-on::after {
+  content: ""; position: absolute; left: 5px; top: 1px;
+  width: 4px; height: 9px; border: solid #fff; border-width: 0 2px 2px 0; transform: rotate(45deg);
+}
+
+/* color: hex text + swatch */
+.te-color { display: inline-flex; align-items: center; gap: 9px; flex-shrink: 0; }
+.te-hex { font-family: var(--md-code-font); font-size: 0.72rem; color: #5d6678; letter-spacing: 0.03em; }
+[data-md-color-scheme="slate"] .te-hex { color: #aab2c0; }
+.te-sw { width: 19px; height: 19px; border-radius: 3px; border: 1px solid rgba(0,0,0,0.2); flex-shrink: 0; }
+
+/* dropdown: value + caret box */
+.te-dd { display: inline-flex; align-items: center; gap: 7px; flex-shrink: 0; }
+.te-dd__v { font-size: 0.78rem; color: #3a4252; }
+[data-md-color-scheme="slate"] .te-dd__v { color: #c7cdd7; }
+.te-dd__b {
+  width: 24px; height: 24px; border: 1px solid #cdd4de; border-radius: 4px;
+  display: inline-flex; align-items: center; justify-content: center; color: #8a93a2; font-size: 0.55rem;
+}
+[data-md-color-scheme="slate"] .te-dd__b { border-color: #3a3f4b; }
+
+/* text input */
+.te-tx {
+  border: 1px solid #cdd4de; border-radius: 4px; padding: 5px 10px; flex-shrink: 0;
+  font-family: var(--md-code-font); font-size: 0.7rem; color: #3a4252; background: #fff;
+  min-width: 8rem; max-width: 15rem; overflow: hidden; white-space: nowrap; text-overflow: ellipsis;
+}
+[data-md-color-scheme="slate"] .te-tx { background: #2c313b; border-color: #3a3f4b; color: #d7dce4; }
+.te-tx--ph { color: #aab2c0; }
+
+/* Page Builder / admin small tag on the header */
+.te-mock__tag {
+  font-size: 0.6rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em;
+  color: #6a4fd0; background: #efeaff; border-radius: 4px; padding: 2px 7px;
+}
+.te-mock--admin .te-mock__tag { color: #1d6fb8; background: #e6f1fb; }
+.te-code {
+  border: 1px dashed #c7b6ef; background: #faf8ff; border-radius: 5px; padding: 6px 9px;
+  font-family: var(--md-code-font); font-size: 0.66rem; color: #6a4fd0; flex: 1;
+}
+[data-md-color-scheme="slate"] .te-code { background: #2a2640; border-color: #4a3f7a; color: #b9a8f0; }
+.te-save { background: #2f74e6; color: #fff; font-size: 0.66rem; font-weight: 600; border-radius: 5px; padding: 5px 14px; flex-shrink: 0; }
+.te-bc { font-size: 0.74rem; color: #4a5568; }
+.te-bc b { color: #222a38; }
+[data-md-color-scheme="slate"] .te-bc { color: #aab2c0; }
+[data-md-color-scheme="slate"] .te-bc b { color: #e3e7ee; }
+.te-bc code { font-family: var(--md-code-font); font-size: 0.7rem; background: #eef1f5; padding: 1px 6px; border-radius: 4px; color: #5b6472; }
+[data-md-color-scheme="slate"] .te-bc code { background: #2c313b; color: #c7cdd7; }
+
+/* code-only (config.json / lang) + behavioural-note variants — NOT editable fields */
+.te-mock--code .te-mock__tag { color: #9a6b00; background: #fdf0d5; }
+[data-md-color-scheme="slate"] .te-mock--code .te-mock__tag { color: #e0b85a; background: #3a3320; }
+.te-mock--note { background: #fafbfd; }
+[data-md-color-scheme="slate"] .te-mock--note { background: #20232b; }
+.te-note { padding: 11px 15px; font-size: 0.76rem; line-height: 1.5; color: #6b7484; }
+[data-md-color-scheme="slate"] .te-note { color: #98a1b0; }
+
+/* Page-Builder AI HTML Generator widget editor (matches the real panel) */
+.te-mock--pb .te-mock__hd { font-size: 0.9rem; gap: 0.5rem; }
+.te-mock--pb .te-mock__grp { font-size: 0.66rem; letter-spacing: 0.08em; text-transform: uppercase; color: #6b7383; }
+.te-pbbox {
+  margin: 4px 15px 0; border: 1px solid #d7dbe3; border-radius: 5px; background: #fbfcfe;
+  padding: 9px 11px; font-family: var(--md-code-font); font-size: 0.66rem; line-height: 1.6;
+  color: #3a4252; white-space: pre; overflow: hidden;
+}
+[data-md-color-scheme="slate"] .te-pbbox { background: #181b22; border-color: #3a3f4b; color: #c7cdd7; }
+.te-pbbox .k { color: #1f6feb; }       /* tag */
+.te-pbbox .s { color: #8250df; }       /* selector / var */
+.te-pbbtns { display: flex; flex-direction: column; gap: 7px; padding: 11px 15px 4px; }
+.te-btn-ghost {
+  text-align: center; border: 1px solid #cdd4de; border-radius: 5px; padding: 7px 0;
+  font-size: 0.72rem; font-weight: 600; color: #3a4252; background: #fff;
+}
+[data-md-color-scheme="slate"] .te-btn-ghost { background: #2c313b; border-color: #3a3f4b; color: #d7dce4; }
+.te-save--full { display: block; text-align: center; padding: 8px 0; }
+.te-mock--pb .te-mock__row { padding-top: 6px; }
+.te-mock--pb .te-mock__row .te-lbl { order: 2; }
+.te-mock--pb .te-mock__row .te-cb { order: 1; }
+
+/* ----------------------------------------------------------------------
+ * BigCommerce admin left-nav (dark sidebar) — mimics the real control panel.
+ * Parent section expanded (is-open), target sub-item highlighted (is-active).
+ * ---------------------------------------------------------------------- */
+.te-mock.te-nav {
+  max-width: 17rem; background: #34313f; border-color: #34313f; padding: 0 0 6px;
+  box-shadow: 0 4px 18px rgba(23, 33, 55, 0.18); color: #cfccd8;
+}
+[data-md-color-scheme="slate"] .te-mock.te-nav { background: #1c1a24; border-color: #2c2935; }
+.te-nav__brand {
+  padding: 13px 16px; font-size: 0.82rem; font-weight: 700; letter-spacing: 0.01em;
+  color: #fff; border-bottom: 1px solid rgba(255,255,255,0.08); margin-bottom: 4px;
+}
+.te-nav__top {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 8px 16px; font-size: 0.8rem; color: #cfccd8;
+}
+.te-nav__top.is-open { color: #fff; font-weight: 600; }
+.te-nav__chev { font-size: 0.6rem; color: #8d889c; }
+.te-nav__sub {
+  padding: 7px 16px 7px 30px; font-size: 0.76rem; color: #b3aec2;
+  border-left: 3px solid transparent;
+}
+.te-nav__sub.is-active {
+  color: #fff; font-weight: 600; background: rgba(255,255,255,0.07); border-left-color: #4f9cf9;
+}
+
+/* Theme Styles → Styles variation list — active variation shows a green check */
+.te-check { color: #16a34a; font-weight: 700; font-size: 0.9rem; flex-shrink: 0; }
+[data-md-color-scheme="slate"] .te-check { color: #34d17a; }
+.te-mock--styles .te-mock__row.is-active { background: rgba(22,163,74,0.06); }
+
+/* ----------------------------------------------------------------------
+ * PDP layout wireframe — a real grey-box skeleton of the product-page
+ * zones (replaces the old ASCII diagram). Pure presentation; aria-hidden.
+ * ------------------------------------------------------------------- */
+.pdpwire {
+  display: flex; flex-direction: column; gap: 10px;
+  max-width: 560px; margin: 1.1rem 0; padding: 16px;
+  border: 1px solid #e2e5ea; border-radius: 10px; background: #f7f8fa;
+  font-size: 0.74rem; color: #5a6473;
+}
+[data-md-color-scheme="slate"] .pdpwire { background: #1e2128; border-color: #2c303a; color: #aab2c0; }
+.pdpwire__zone, .pdpwire__bar {
+  background: #fff; border: 1px solid #e2e5ea; border-radius: 6px; padding: 9px 12px;
+}
+[data-md-color-scheme="slate"] .pdpwire__zone,
+[data-md-color-scheme="slate"] .pdpwire__bar { background: #262a33; border-color: #343945; }
+.pdpwire small { color: #99a2b0; font-size: 0.92em; }
+[data-md-color-scheme="slate"] .pdpwire small { color: #7e8898; }
+.pdpwire__cols { display: grid; grid-template-columns: 2fr 3fr; gap: 10px; }
+.pdpwire__gallery { display: grid; grid-template-columns: 26px 1fr; gap: 7px; }
+.pdpwire__thumbs { display: flex; flex-direction: column; gap: 6px; }
+.pdpwire__thumbs span { height: 26px; background: #e7eaef; border-radius: 4px; }
+[data-md-color-scheme="slate"] .pdpwire__thumbs span { background: #343945; }
+.pdpwire__main {
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  min-height: 132px; background: #eef0f4; border-radius: 6px; gap: 3px; text-align: center;
+}
+[data-md-color-scheme="slate"] .pdpwire__main { background: #2f343e; }
+.pdpwire__info { display: flex; flex-direction: column; gap: 8px; }
+.pdpwire__skel { height: 9px; border-radius: 4px; background: #e7eaef; }
+[data-md-color-scheme="slate"] .pdpwire__skel { background: #343945; }
+.pdpwire__skel--title { height: 15px; width: 78%; }
+.pdpwire__skel--brand { width: 32%; height: 7px; }
+.pdpwire__skel--price { height: 13px; width: 46%; background: #d7dbe2; }
+[data-md-color-scheme="slate"] .pdpwire__skel--price { background: #424856; }
+.pdpwire__row { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+.pdpwire__chip {
+  font-size: 0.68rem; padding: 2px 8px; border-radius: 999px;
+  background: #eef0f4; border: 1px solid #e2e5ea; color: #6b7484;
+}
+[data-md-color-scheme="slate"] .pdpwire__chip { background: #2f343e; border-color: #3a4150; color: #9aa3b2; }
+.pdpwire__sw { width: 16px; height: 16px; border-radius: 50%; background: #dfe3e9; border: 1px solid #cfd5de; }
+[data-md-color-scheme="slate"] .pdpwire__sw { background: #3a4150; border-color: #474e5e; }
+.pdpwire__cta {
+  flex: 1; min-width: 120px; text-align: center; padding: 7px 10px; border-radius: 6px;
+  background: #c2603a; color: #fff; font-weight: 600; font-size: 0.72rem;
+}
+.pdpwire__qty {
+  width: 46px; text-align: center; padding: 7px 0; border-radius: 6px;
+  background: #fff; border: 1px solid #d3d8e0; color: #6b7484;
+}
+[data-md-color-scheme="slate"] .pdpwire__qty { background: #262a33; border-color: #3a4150; }
+.pdpwire__tabs { display: flex; gap: 6px; flex-wrap: wrap; }
+.pdpwire__tab {
+  font-size: 0.68rem; padding: 4px 9px; border-radius: 5px;
+  background: #fff; border: 1px solid #e2e5ea; color: #6b7484;
+}
+[data-md-color-scheme="slate"] .pdpwire__tab { background: #262a33; border-color: #343945; color: #9aa3b2; }
+.pdpwire__tab--active { background: #c2603a; border-color: #c2603a; color: #fff; font-weight: 600; }
+.pdpwire__bar--mobile { border-style: dashed; }
+@media (max-width: 480px){ .pdpwire__cols { grid-template-columns: 1fr; } }
+
+/* ----------------------------------------------------------------------
+ * BigCommerce admin "Product Settings" form mockup (Settings → Products) —
+ * right-aligned label + blue checkbox + helper text, matching the real BC UI.
+ * ------------------------------------------------------------------- */
+.te-adminform {
+  max-width: 540px; margin: 1rem 0; border: 1px solid #e2e5ea; border-radius: 8px;
+  background: #fff; overflow: hidden; font-size: 0.76rem;
+}
+[data-md-color-scheme="slate"] .te-adminform { background: #20232b; border-color: #2c303a; }
+.te-af__hd {
+  padding: 11px 16px; font-weight: 700; color: #3a4252;
+  background: #f3f5f8; border-bottom: 1px solid #e2e5ea;
+}
+[data-md-color-scheme="slate"] .te-af__hd { color: #cdd3dd; background: #262a33; border-color: #2c303a; }
+.te-af__row {
+  display: grid; grid-template-columns: 44% 1fr; gap: 12px; align-items: start;
+  padding: 9px 16px; border-bottom: 1px solid #f0f2f5;
+}
+.te-af__row:last-child { border-bottom: 0; }
+[data-md-color-scheme="slate"] .te-af__row { border-color: #2a2e38; }
+.te-af__lbl { text-align: right; color: #5a6473; }
+[data-md-color-scheme="slate"] .te-af__lbl { color: #aab2c0; }
+.te-af__ctrl { display: flex; align-items: flex-start; gap: 9px; }
+.te-af__cb {
+  width: 17px; height: 17px; border-radius: 3px; border: 1.5px solid #c2c8d2;
+  flex-shrink: 0; margin-top: 1px; position: relative; background: #fff;
+}
+[data-md-color-scheme="slate"] .te-af__cb { border-color: #4a5160; background: #262a33; }
+.te-af__cb.is-on { background: #4f6dd8; border-color: #4f6dd8; }
+.te-af__cb.is-on::after {
+  content: ""; position: absolute; left: 5px; top: 1px; width: 4px; height: 9px;
+  border: solid #fff; border-width: 0 2px 2px 0; transform: rotate(45deg);
+}
+.te-af__hint { color: #6b7484; }
+[data-md-color-scheme="slate"] .te-af__hint { color: #9aa3b2; }
+.te-af__row.is-focus { background: #fff8f3; }
+[data-md-color-scheme="slate"] .te-af__row.is-focus { background: #2c2722; }
+
+/* ----------------------------------------------------------------------
+ * Product-card skeleton wireframe (replaces ASCII card diagrams).
+ * ------------------------------------------------------------------- */
+.cardwire {
+  width: 240px; margin: 1.1rem 0; padding: 12px; position: relative;
+  border: 1px solid #e2e5ea; border-radius: 10px; background: #fff;
+  display: flex; flex-direction: column; gap: 7px; font-size: 0.72rem; color: #5a6473;
+}
+[data-md-color-scheme="slate"] .cardwire { background: #262a33; border-color: #343945; color: #aab2c0; }
+.cardwire__badge {
+  position: absolute; top: 14px; left: 14px; z-index: 1;
+  background: #c2603a; color: #fff; font-size: 0.62rem; font-weight: 600;
+  padding: 2px 7px; border-radius: 4px;
+}
+.cardwire__img {
+  aspect-ratio: 1 / 1; background: #eef0f4; border-radius: 6px;
+  display: flex; align-items: center; justify-content: center; color: #aab2c0;
+}
+[data-md-color-scheme="slate"] .cardwire__img { background: #2f343e; color: #7e8898; }
+.cardwire__skel { height: 9px; border-radius: 4px; background: #e7eaef; }
+[data-md-color-scheme="slate"] .cardwire__skel { background: #343945; }
+.cardwire__skel--title { width: 82%; height: 11px; }
+.cardwire__sub { color: #8a93a2; font-size: 0.68rem; }
+.cardwire__rating { color: #e0951f; letter-spacing: 1px; }
+.cardwire__rating small { color: #9aa3b2; letter-spacing: 0; }
+.cardwire__price { display: flex; gap: 8px; align-items: baseline; }
+.cardwire__price b { color: #c2603a; font-size: 0.9rem; }
+.cardwire__price s { color: #9aa3b2; }
+.cardwire__actions { display: flex; gap: 6px; align-items: center; margin-top: 2px; }
+.cardwire__ico {
+  width: 26px; height: 26px; border-radius: 6px; border: 1px solid #e2e5ea;
+  display: flex; align-items: center; justify-content: center; color: #6b7484;
+}
+[data-md-color-scheme="slate"] .cardwire__ico { border-color: #3a4150; color: #9aa3b2; }
+.cardwire__cart {
+  flex: 1; text-align: center; padding: 6px; border-radius: 6px;
+  background: #c2603a; color: #fff; font-weight: 600; font-size: 0.7rem;
+}
+
+/* ----------------------------------------------------------------------
+ * Bulk-order table skeleton wireframe (replaces ASCII table diagram).
+ * ------------------------------------------------------------------- */
+.bowire {
+  max-width: 680px; margin: 1.1rem 0; border: 1px solid #e2e5ea; border-radius: 8px;
+  overflow: hidden; font-size: 0.7rem; color: #5a6473;
+}
+[data-md-color-scheme="slate"] .bowire { border-color: #2c303a; color: #aab2c0; }
+.bowire__row {
+  display: grid; grid-template-columns: 40px 1.7fr 0.7fr 1fr 0.8fr 0.8fr 1.1fr;
+  gap: 8px; align-items: center; padding: 8px 12px; border-bottom: 1px solid #f0f2f5;
+}
+[data-md-color-scheme="slate"] .bowire__row { border-color: #2a2e38; }
+.bowire__row:last-child { border-bottom: 0; }
+.bowire__hd { background: #f3f5f8; font-weight: 600; color: #3a4252; }
+[data-md-color-scheme="slate"] .bowire__hd { background: #2c313b; color: #cdd3dd; }
+.bowire__foot { background: #fafbfc; font-weight: 600; }
+[data-md-color-scheme="slate"] .bowire__foot { background: #20232b; }
+.bowire__img { width: 30px; height: 30px; background: #e7eaef; border-radius: 4px; }
+[data-md-color-scheme="slate"] .bowire__img { background: #343945; }
+.bowire__name { display: flex; flex-direction: column; }
+.bowire__name small { color: #8a93a2; }
+.bowire__qty {
+  display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+  padding: 3px 8px; border: 1px solid #d3d8e0; border-radius: 5px; color: #6b7484;
+}
+[data-md-color-scheme="slate"] .bowire__qty { border-color: #3a4150; }
+.bowire__btn {
+  text-align: center; padding: 5px 8px; border-radius: 5px;
+  background: #c2603a; color: #fff; font-weight: 600; font-size: 0.66rem;
+}
+
+/* ----------------------------------------------------------------------
+ * Open dropdown menu (option enumeration) — field row + listed options,
+ * the default highlighted, matching an opened BC Theme-Editor select.
+ * ------------------------------------------------------------------- */
+.te-ddmenu {
+  margin: 3px 0 2px auto; width: max-content; max-width: 94%;
+  border: 1px solid #d3d8e0; border-radius: 6px; background: #fff;
+  box-shadow: 0 6px 18px rgba(23, 33, 55, 0.12); overflow: hidden;
+}
+[data-md-color-scheme="slate"] .te-ddmenu { background: #2c313b; border-color: #3a4150; box-shadow: 0 6px 18px rgba(0,0,0,0.35); }
+.te-ddopt {
+  display: flex; align-items: center; justify-content: space-between; gap: 18px;
+  padding: 6px 12px; font-size: 0.78rem; color: #3a4252;
+}
+.te-ddopt + .te-ddopt { border-top: 1px solid #f0f2f5; }
+[data-md-color-scheme="slate"] .te-ddopt { color: #c7cdd7; }
+[data-md-color-scheme="slate"] .te-ddopt + .te-ddopt { border-color: #343945; }
+.te-ddopt.is-sel { background: #eef4ff; color: #1d4ed8; font-weight: 600; }
+[data-md-color-scheme="slate"] .te-ddopt.is-sel { background: rgba(79,108,216,0.18); color: #9db4ff; }
+.te-ddck { color: #1d4ed8; font-size: 0.72rem; }
+[data-md-color-scheme="slate"] .te-ddck { color: #9db4ff; }
