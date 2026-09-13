@@ -1,0 +1,74 @@
+name: build
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - run: pip install mkdocs-material
+
+      # --strict turns a broken internal link into a failed build. Every page here links
+      # to at least one other, and a rename that misses one would otherwise ship a 404
+      # inside the documentation.
+      - name: Build the site
+        run: mkdocs build --strict
+
+      # These assertions used to live in the theme repository, against a copy of the guide
+      # that was no longer published. They belong here, against the copy that is.
+      #
+      # Each one guards something a merchant got wrong, or would have:
+      #  - the four custom page templates are chosen from a dropdown, and three of them
+      #    had no section at all until someone asked
+      #  - the page body a merchant types is ignored by all four, which looks like a bug
+      #  - Track Order has no lookup form because BigCommerce offers no endpoint for one,
+      #    not because it is unfinished
+      #  - the About statistics are template literals, so a merchant told to edit the
+      #    language file searches it for "50K+" and finds nothing
+      #  - editing lang/en.json changes English alone
+      - name: Check the guide still covers what merchants get wrong
+        run: |
+          python - <<'PY'
+          import pathlib, sys
+
+          docs = pathlib.Path('docs')
+          # Prose is hard-wrapped, so a sentence to look for may be split across lines.
+          # Collapse whitespace across the whole guide before matching on meaning.
+          guide = ' '.join(
+              ' '.join(p.read_text(encoding='utf-8').split())
+              for p in sorted(docs.rglob('*.md'))
+          )
+
+          required = [
+              'Lookbook',
+              'About',
+              'FAQ',
+              'Track Order',
+              'what you type into the web page body is not what appears',
+              'no storefront endpoint a theme can query',
+              'not into the language file',
+              'templates/pages/custom/page/about.html',
+              'every locale you have enabled needs the same edit',
+          ]
+
+          missing = [phrase for phrase in required if phrase not in guide]
+
+          if missing:
+              print('The guide no longer covers:')
+              for phrase in missing:
+                  print(f'  - {phrase}')
+              sys.exit(1)
+
+          print(f'All {len(required)} required passages present.')
+          PY
