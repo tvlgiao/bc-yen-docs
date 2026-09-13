@@ -1,0 +1,7 @@
+# Normalise to LF in the repository. Everything here is text, and the site is built on
+# Linux runners as often as on this Windows checkout.
+* text=auto eol=lf
+
+# CNAME is read verbatim by GitHub Pages. A CRLF here has been known to make the custom
+# domain fail to apply, and it is one line with nothing to gain from native endings.
+docs/CNAME text eol=lf

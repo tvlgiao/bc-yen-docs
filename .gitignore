@@ -1,0 +1,17 @@
+# MkDocs build output
+site/
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+
+# Tooling / local agent artifacts
+.playwright-mcp/
+.claude/
+
+# OS / editor junk
+.DS_Store
+Thumbs.db
+*.stackdump
+*.swp
