@@ -14,6 +14,7 @@ nav:
     - usage/page-templates.md
     - usage/page-builder.md
   - Settings Reference: settings-reference.md
+  - Release Notes: changelog.md
   - Troubleshooting: troubleshooting.md
   - Support: support.md
 
