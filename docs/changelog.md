@@ -9,9 +9,9 @@ Yen Theme for BigCommerce, built on Cornerstone 6.19.0.
 Three, and switching between them changes appearance only — never structure, never
 features.
 
-- **Light** — the theme's own defaults
-- **Bold** — high-contrast palette, heavier type, opens in dark mode
-- **Warm** — earth-toned palette applied throughout
+- **Home** — the theme's own defaults
+- **Fashion** — high-contrast palette, heavier type, opens in dark mode
+- **Food** — earth-toned palette applied throughout
 
 ### Shopping experience
 

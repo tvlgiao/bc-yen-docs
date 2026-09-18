@@ -23,7 +23,7 @@ from your own catalog and settings.
 You will learn how to:
 
 1. Install and activate the theme.
-2. Pick the variation — Light, Bold or Warm — that matches the look you want.
+2. Pick the variation — Home, Fashion or Food — that matches the look you want.
 3. Work through the Theme Editor section by section.
 4. Set up the two features that need more than a checkbox: the **Lookbook** and the
    **Page Builder hero**.
@@ -36,11 +36,14 @@ You will learn how to:
 Same theme, different settings. Switching changes appearance only — never structure, never
 features.
 
+Each one is named for the kind of store it was designed for — Home & Garden, Fashion &
+Jewelry, Food & Beverage — and what separates them is colour and type, not features.
+
 | Variation | What it changes | Settings it overrides |
 | --- | --- | --- |
-| **Light** | Nothing — the theme's own defaults | 0 |
-| **Bold** | High-contrast palette, heavier type, dark default mode | 61 |
-| **Warm** | Earth-toned palette applied throughout | 195 |
+| **Home** | Nothing — the theme's own defaults | 0 |
+| **Fashion** | High-contrast palette, heavier type, dark default mode | 61 |
+| **Food** | Earth-toned palette applied throughout | 195 |
 
 !!! tip "Pick the variation first"
     Switching resets any setting the target variation defines. Choose the variation before
