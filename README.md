@@ -2,7 +2,13 @@
 
 Documentation site for the **Yen** BigCommerce theme by [PapaThemes](https://papathemes.com).
 
-Production URL: <https://bc-yen-docs.papathemes.com>
+Production URL: <https://tvlgiao.github.io/bc-yen-docs/>
+
+The PapaThemes convention is a `bc-<theme>-docs.papathemes.com` subdomain, and
+`bc-yen-docs.papathemes.com` is reserved for this site. It has no DNS record yet, so the site is
+served from the GitHub Pages address for now. To switch back, first add a DNS record at name.com
+(`CNAME bc-yen-docs -> tvlgiao.github.io`). Then restore `docs/CNAME` (`bc-yen-docs.papathemes.com`),
+point `site_url` in `mkdocs.yml` at it, redeploy, and update `meta.documentation_url` in bc-yen-theme.
 
 This is the URL `meta.documentation_url` points at in the theme's `config.json`, and the
 one BigCommerce opens during Theme Marketplace review.
