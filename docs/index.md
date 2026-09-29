@@ -33,17 +33,15 @@ You will learn how to:
 
 ## The three variations
 
-Same theme, different settings. Switching changes appearance only — never structure, never
-features.
+Same features in all three. Each variation has its own layout preset as well as its own
+colour and type, and each is named for the kind of store it was designed for: Home &
+Garden, Fashion & Jewelry, or Food & Beverage.
 
-Each one is named for the kind of store it was designed for — Home & Garden, Fashion &
-Jewelry, Food & Beverage — and what separates them is colour and type, not features.
-
-| Variation | What it changes | Settings it overrides |
-| --- | --- | --- |
-| **Home** | Nothing — the theme's own defaults | 0 |
-| **Fashion** | High-contrast palette, heavier type, dark default mode | 61 |
-| **Food** | Earth-toned palette applied throughout | 195 |
+| Variation | Layout preset | What it looks like | Demo |
+| --- | --- | --- | --- |
+| **Home** | Classic | Logo left, split hero beside its copy, framed product cards four across, orange accent. The theme's own defaults. | [ember-home-demo](https://ember-home-demo.mybigcommerce.com) |
+| **Fashion** | Editorial | Centred logo over the menu, full-bleed hero, three-across grid, display serif, brass accent, opens in dark mode. | [ember-fashion-demo](https://ember-fashion-demo.mybigcommerce.com) |
+| **Food** | Market | Wide search on the top row with the aisles below, framed hero with the copy on the photo, round category tags, five-across home grids, herb green. | [ember-food-demo](https://ember-food-demo.mybigcommerce.com) |
 
 !!! tip "Pick the variation first"
     Switching resets any setting the target variation defines. Choose the variation before

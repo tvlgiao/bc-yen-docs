@@ -6,12 +6,14 @@ Yen Theme for BigCommerce, built on Cornerstone 6.19.0.
 
 ### Variations
 
-Three, and switching between them changes appearance only — never structure, never
-features.
+Three, with the same features. Each has its own layout preset (Theme Editor → Yen Theme
+→ Layout Preset) as well as its own colours and type.
 
-- **Home** — the theme's own defaults
-- **Fashion** — high-contrast palette, heavier type, opens in dark mode
-- **Food** — earth-toned palette applied throughout
+- **Home** — Classic layout, the theme's own defaults
+- **Fashion** — Editorial layout: centred logo, full-bleed hero, display serif, brass
+  accent, opens in dark mode
+- **Food** — Market layout: search-first header, round category tags, five-across home
+  grids, herb green, its own photographs and copy
 
 ### Shopping experience
 
